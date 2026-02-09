@@ -6,36 +6,49 @@ Esta guia es para alguien que esta empezando a aprender Django desde cero. Inclu
 
 Necesitas tener instalado:
 - Python 3.10 o superior
-- pip (viene con Python)
+- pip (viene con Python) -> (manejador de paquetes o dependencias)
 
 Verifica con estos comandos:
 
 ```bash
-python3 --version
-pip3 --version
+MacOS/Linux:
+    python3 --version
+Windows:
+    python --version
+
+    pip3 --version
+otra forma de verificar la version de pip
+    python -m pip --version
 ```
 
 ## 2) Crear una carpeta para tu proyecto
 
 ```bash
-mkdir mi_proyecto_django
-cd mi_proyecto_django
+mkdir mi_proyecto_django -> crea una carpeta en mi proyecto
+cd mi_proyecto_django -> entra a la carpeta creada
 ```
 
 ## 3) Crear y activar un entorno virtual
 
+instalacion de virtualenv (opcional pero recomendado):
+
+```bash
+pip install virtualenv
+```
+
 En macOS/Linux:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv .env -> crear un entorno virtual llamado .env
+source .env/bin/activate -> activar el entorno virtual
+
 
 En Windows:
-python -m venv .venv
-.venv\Scripts\activate
+python -m venv .env -> crear un entorno virtual llamado .env
+.env\Scripts\activate -> activar el entorno virtual
 ```
 
-Si ves el prefijo (.venv) en la terminal, el entorno esta activo.
+Si ves el prefijo (.env) en la terminal, el entorno esta activo.
 
 ## 4) Instalar Django
 
