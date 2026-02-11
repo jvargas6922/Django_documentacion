@@ -30,9 +30,10 @@ Cuando creas un proyecto con `django-admin startproject`, se generan archivos co
 Es un archivo que te permite ejecutar comandos del proyecto, por ejemplo:
 
 ```bash
-python manage.py runserver
-python manage.py startapp mi_app
-python manage.py migrate
+python manage.py runserver -> iniciar el servidor de desarrollo
+python manage.py startapp mi_app -> crear una nueva app dentro del proyecto
+python manage.py migrate -> aplicar migraciones a la base de datos
+python manage.py help -> ver todos los comandos disponibles
 ```
 
 ### 2.2) settings.py

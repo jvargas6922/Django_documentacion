@@ -60,6 +60,13 @@ Verifica la version:
 
 ```bash
 django-admin --version
+
+saber las librerias que tengo instalas en mi entorno virtual
+pip list
+
+
+crear el archivo de dependencias requirements.txt
+pip freeze > requirements.txt
 ```
 
 ## 5) Crear un nuevo proyecto Django
@@ -159,7 +166,100 @@ http://127.0.0.1:8000/
 
 Deberias ver: "Hola desde Django".
 
-## 12) Proximos pasos sugeridos
+## 12) Creacion de Modelos
+Creacion de modelos y migraciones
+    creamos el modelo en mi_app/models.py
+    Ejemplo:
+
+    class Producto(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=60)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    categoria = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nombre
+
+## 13) Creacion de migraciones
+    Para crear las migraciones y actualizar la base de datos, ejecutamos:
+
+    python manage.py makemigrations
+    python manage.py migrate
+
+## 14) Registro en el admin
+    Para registrar el modelo en el panel de administracion, editamos mi_app/admin.py:
+    Ejmplo:
+
+    from django.contrib import admin
+    from .models import Producto
+
+
+    admin.site.register(Producto)
+
+## 15) Creacion de templates
+    Para crear una pagina HTML, creamos una carpeta llamada "templates" dentro de la app y luego un archivo HTML.
+    Ejemplo:
+
+    mi_app/templates/inicio.html
+
+    <html>
+    <body>
+        <h1>Bienvenido a mi sitio Django</h1>
+    </body>
+    </html>
+
+## 16) Creacion de registros desde la terminal de django
+    Para crear registros en la base de datos desde la terminal de Django, ejecutamos:
+
+    python manage.py shell
+
+    Luego dentro de la terminal interactiva:
+
+    from mi_app.models import Producto
+
+    producto1 = Producto(nombre="Camiseta", descripcion="Camiseta de algodón", precio=19.99, categoria="Ropa")
+    producto1.save()
+
+    producto2 = Producto(nombre="Laptop", descripcion="Laptop de alta gama", precio=999.99, categoria="Electrónica")
+    producto2.save()
+
+## 17) Creación de registro desde un formulario HTML
+    Para crear un formulario HTML que permita agregar productos, creamos un archivo llamado "formulario.html" dentro de la carpeta "templates":
+
+    <html>
+    <body>
+        <h1>Agregar Producto</h1>
+        <form method="POST">
+            {% csrf_token %}
+            Nombre: <input type="text" name="nombre"><br>
+            Descripción: <input type="text" name="descripcion"><br>
+            Precio: <input type="text" name="precio"><br>
+            Categoría: <input type="text" name="categoria"><br>
+            <input type="submit" value="Agregar Producto">
+        </form>
+    </body>
+    </html>
+
+    Luego, en views.py, creamos una vista para manejar el formulario:
+
+    from django.shortcuts import render, redirect
+    from .models import Producto
+
+    def agregar_producto(request):
+        if request.method == "POST":
+            nombre = request.POST['nombre']
+            descripcion = request.POST['descripcion']
+            precio = request.POST['precio']
+            categoria = request.POST['categoria']
+            nuevo_producto = Producto(nombre=nombre, descripcion=descripcion, precio=precio, categoria=categoria)
+            nuevo_producto.save()
+            return redirect('inicio')
+        return render(request, 'formulario.html')
+
+    Finalmente, agregamos la ruta en urls.py:
+
+    path("agregar/", views.agregar_producto, name="agregar_producto"), 
+
 
 - Aprender sobre modelos (models.py)
 - Migraciones de base de datos
