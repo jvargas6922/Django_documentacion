@@ -314,9 +314,9 @@ nombre_proyecto/
         models.py
         tests.py
         views.py
-        templates/
-            producto/
-                productos.html
+    templates/
+        producto/
+            productos.html
 
 ## 20) Crear una vista para poder monstrar el template creado.
 En el archivo views.py de tu aplicación, crea una vista que renderice el template productos.html. Por ejemplo:
@@ -346,9 +346,10 @@ Ahora, cuando accedas a http://localhost:8000/productos/, se renderizará el tem
 ```
 Nota: para poder utilizar sentencias como for, if en un template debe ser de esta manera
 {% for iterador in lista %}
-{% endfor%}
+{% endfor %}
 
 {% if condicion %}
+
 {% endif %}
 
 Para poder acceder a los valores de un objeto en el template, se hace de esta manera:
@@ -362,6 +363,7 @@ python manage.py shell
 Luego dentro de la terminal interactiva:
 ```python
 from mi_app.models import Producto
+
 producto1 = Producto(nombre="Camiseta", descripcion="Camiseta de algodón", precio=19.99, categoria="Ropa")
 producto1.save()
 producto2 = Producto(nombre="Laptop", descripcion="Laptop de alta gama", precio=999.99, categoria="Electrónica")
@@ -373,7 +375,7 @@ Para crear un formulario HTML que permita agregar productos, creamos un archivo 
 <html></html>
 <body>
     <h1>Agregar Producto</h1>
-    <form method="POST">
+    <form method="POST" action="{{ url 'ruta que resuelve la peticion' }}">
         {% csrf_token %}
         Nombre: <input type="text" name="nombre"><br>
         Descripción: <input type="text" name="descripcion"><br>
@@ -409,3 +411,65 @@ urlpatterns = [
     path("agregar_producto/", views.agregar_producto, name="agregar_producto"),
 ]
 ```
+## 22) uso de form de Django para crear un formulario de manera mas sencilla
+Django proporciona una clase llamada Form que facilita la creación de formularios HTML y la validación de datos. Para usar esta clase, primero debes crear un archivo llamado forms.py dentro de tu aplicación y definir un formulario para el modelo Producto. Por ejemplo:
+```python
+from django import forms
+from .models import Producto
+
+
+class ProductoForm(forms.ModelForm):
+    # formualrio basico para el modelo Producto
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'categoria']
+
+    # formualrio con widgets personalizados para el modelo Producto
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'categoria']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
+            'categoria': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+```
+Nota: Explicacion de los widgets personalizados:
+En el ejemplo anterior, se han definido widgets personalizados para cada campo del formulario. 
+Esto se hace utilizando el atributo widgets dentro de la clase Meta del formulario. 
+Cada campo del formulario se asigna a un widget específico, que es una clase proporcionada por Django para renderizar el campo de una manera específica en el HTML. 
+En este caso, se han utilizado TextInput para los campos de texto y NumberInput para el campo de precio, y se les ha asignado la clase CSS 'form-control' para aplicar estilos personalizados a los campos del formulario. Esto permite que el formulario se vea más atractivo y sea más fácil de usar para los usuarios finales. Puedes personalizar los widgets según tus necesidades para mejorar la apariencia y funcionalidad de tus formularios en Django.
+
+link de la documentacion oficial de Django sobre formularios: https://docs.djangoproject.com/en/4.2/topics/forms/
+
+Luego, en tu vista agregar_producto, puedes usar este formulario para manejar la creación de productos de manera más sencilla:
+```
+from django.shortcuts import render, redirect
+from .models import Producto
+from .forms import ProductoForm
+
+def agregar_producto(request):
+    if request.method == "POST":
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()  # Guarda el nuevo producto en la base de datos
+            return redirect('inicio')
+    else:
+        form = ProductoForm()  # Crea un formulario vacío para mostrar en la página
+    return render(request, 'formulario.html', {'form': form})
+```
+Finalmente, en tu template formulario.html, puedes renderizar el formulario de esta manera:
+```html
+<html>
+<body>
+    <h1>Agregar Producto</h1>
+    <form method="POST" action="{% url 'agregar_producto' %}">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Renderiza el formulario con formato de párrafos -->
+        <input type="submit" value="Agregar Producto">
+    </form>
+</body>
+</html>
+```
+
