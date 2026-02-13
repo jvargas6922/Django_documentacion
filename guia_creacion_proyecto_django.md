@@ -34,9 +34,11 @@ En Windows:
 ```bash
 python -m venv .env -> crea entorno virtual
 .env\Scripts\activate -> activa entorno virtual
+.env\Scripts\activate.bat -> activa entorno virtual (cmd)
 deactivate ->deactivar el entorno virtual
 ```
 ## 4) Instalar Django
+Paso previo debes estar dentro del entorno virtual para instalar Django
 ```bash
 pip install django
 ```
@@ -52,12 +54,17 @@ Crear el archivo de dependencias requirements.txt:
 ```bash
 pip freeze > requirements.txt
 ```
+Agregar paso para instalar dependencias desde el archivo requirements.txt
+```bash
+pip install -r requirements.txt
+```
+
 ## 5) Crear un proyecto Django
 ```bash
 django-admin startproject nombre_proyecto . -> crea un proyecto Django con el nombre especificado en la carpeta actual
 ```
 ## 6) Estructura del proyecto Django (despues de crear el proyecto)
-nombre_proyecto/
+carpeta_proyecto/
     manage.py
     nombre_proyecto/
         __init__.py
@@ -65,12 +72,24 @@ nombre_proyecto/
         urls.py
         asgi.py
         wsgi.py
+    requirements.txt
 
 ## 7) Ejecutar el servidor de desarrollo
 ```bash
 python manage.py runserver
 ```
 Esto iniciara el servidor de desarrollo de Django. Puedes acceder a tu sitio web en http://localhost:8000/ en tu navegador. Veras la pagina de bienvenida de Django, lo que indica que tu proyecto se ha creado correctamente y el servidor esta funcionando.
+-- estructura del proyecto despues de ejecutar el servidor de desarrollo:
+carpeta_proyecto/
+    manage.py
+    nombre_proyecto/
+        __init__.py
+        settings.py
+        urls.py
+        asgi.py
+        wsgi.py
+    sqlite3.db
+    requirements.txt
 
 ## 8) Detener el servidor de desarrollo
 Para detener el servidor de desarrollo, puedes presionar Ctrl + C en la terminal donde se esta ejecutando el servidor. Esto detendra el servidor y liberara el puerto que estaba utilizando.
@@ -95,13 +114,16 @@ nombre_proyecto/
         models.py
         tests.py
         views.py
+    sqlite3.db
+    requirements.txt
 
-Nota si quieres tener un poco más de orden  en tu proyecto puedes crear una carpeta llamada apps y dentro de esa carpeta crear tus aplicaciones, para eso el comando seria:
+Nota:  si quieres tener un poco más de orden  en tu proyecto puedes crear una carpeta llamada apps y dentro de esa carpeta crear tus aplicaciones, para eso el comando seria:
 ```bash
 python manage.py startapp nombre_aplicacion apps/nombre_aplicacion
+mkdir apps && django-admin startapp students ./apps/students -> ejemplo para crear una aplicacion llamada students dentro de la carpeta apps
 ```
 -- estructura del proyecto despues de crear la aplicacion dentro de la carpeta apps:
-nombre_proyecto/
+nombre_carpeta/
     manage.py
     nombre_proyecto/
         __init__.py
@@ -117,6 +139,9 @@ nombre_proyecto/
         models.py
         tests.py
         views.py
+    sqlite3.db
+    requirements.txt
+    
 
 ## 10) Configuraciones a realizar en el archivo settings.py para registrar la aplicacion y otros ajustes
 -- registro de la aplicacion en el proyecto:
@@ -249,11 +274,12 @@ en la base de datos. Ejecuta los siguientes comandos en tu terminal:
 ```bash
 python manage.py makemigrations  # Crea las migraciones para el modelo
 python manage.py migrate  # Aplica las migraciones a la base de datos
+python manage.py showmigrations  # Muestra el estado de las migraciones
 ```
 Esto creará la tabla correspondiente al modelo Producto en tu base de datos. Ahora puedes usar este modelo para crear, leer, actualizar y eliminar productos en tu aplicación Django.
 
 -- estructura del proyecto despues de crear el modelo y las migraciones:
-nombre_proyecto/
+nombre_carpeta/
     manage.py
     nombre_proyecto/
         __init__.py
