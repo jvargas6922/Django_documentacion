@@ -199,6 +199,14 @@ student, created = Student.objects.update_or_create(
 # exists (rápido)
 Student.objects.filter(email="ana@example.com").exists()
 ```
+ # otros tipo de consultas
+ Ejemplo:
+ student = get_object_or_404(Student, id=1)
+ explicacion de la consulta:
+- `get_object_or_404` es una función de Django que intenta obtener un objeto del modelo `Student` con el `id` igual a 1.
+- Si el objeto existe, se devuelve y se asigna a la variable `student`.
+- Si el objeto no existe, se lanza una excepción `Http404`, lo que generalmente resulta en una página de error 404 para el usuario. Esta función es útil para manejar casos donde se espera que un objeto exista, pero no se quiere que el programa falle con un error de base de datos si no se encuentra.
+
 
 ---
 
