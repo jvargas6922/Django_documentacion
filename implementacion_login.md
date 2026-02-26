@@ -9,11 +9,21 @@ En proyecto/settings.py, agrega en INSTALLED_APPS:
 
 ```python
 "accounts",
-``` 
+```
+
+Tambien debo agregar las siguientes url al final del archivo settings.py para configurar las redirecciones despues del login/logout:
+
+(Referencia del proyecto que estamos haciendo)
+```python
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
 ## 3) Crear un formulario de login
 En accounts/forms.py:
 ```python
 from django import forms
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150)
     password = forms.CharField(widget=forms.PasswordInput)
