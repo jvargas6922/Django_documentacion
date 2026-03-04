@@ -63,6 +63,11 @@ Instalar dependencias desde archivo:
 ```bash
 pip install -r requirements.txt
 ```
+EN CASO DE NO TENER INSTALADO POSGRESQL O NO PODER CONECTARSE DE MANERA LOCAL DEBES CORRER ESTOS COMANDOS.
+PUNTOS:
+    5
+    5.1
+    5.2
 
 ## 5) Instalar y crear la base de datos PostgreSQL (local)
 Si ya tienes PostgreSQL instalado, puedes pasar al paso 6.
